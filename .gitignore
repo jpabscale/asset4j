@@ -1,0 +1,37 @@
+.gradle/
+build/
+out/
+.kotlin/
+local.properties
+
+# Gradle wrapper jar is fetched by gradlew (pinned SHA-256) on first use.
+gradle/wrapper/gradle-wrapper.jar
+*.tmp
+*.iml
+.idea/
+.DS_Store
+__pycache__/
+*.pyc
+
+# Test corpus is downloaded by tools/fetch_corpus.py (CI) — never committed.
+# NOTICE.md is committed separately under testassets-notice/ and copied in by the fetch script.
+assetapi/src/test/resources/testassets/*
+
+# Downloaded tarballs / scratch
+*.tar.gz
+
+# .NET harness build output (built once from the pinned AssetsTools.NET source)
+ttmapgen/dotnet-harness/bin/
+ttmapgen/dotnet-harness/obj/
+ttmapgen/dotnet-harness/testdll/bin/
+ttmapgen/dotnet-harness/testdll/obj/
+
+
+# Pinned AssetsTools.NET checkout materialized by the CI workflow (ci.yml) at build time
+.ci/
+
+# ttmapgen harness scratch (tools/build_ttmapgen_harness.py) — disk-backed, gitignored
+.tmp/
+
+# ttmapgen harness reference DLLs (copied in by tools/build_ttmapgen_harness.py)
+ttmapgen/dotnet-harness/lib/

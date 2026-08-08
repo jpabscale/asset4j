@@ -1,0 +1,37 @@
+# Normalize line endings: LF on commit for all text files; CRLF only on checkout where
+# a platform default is acceptable (text=auto), LF forced for source for consistency.
+* text=auto
+
+# Source / config files: force LF line endings.
+*.kt text eol=lf
+*.kts text eol=lf
+*.sc text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.properties text eol=lf
+*.gradle text eol=lf
+*.cs text eol=lf
+*.csproj text eol=lf
+*.gitignore text eol=lf
+gradlew text eol=lf
+LICENSE text eol=lf
+
+# Binary files: never normalize, never diff.
+*.jar binary
+*.ttmap binary
+*.assets binary
+*.assets.resS binary
+*.unity3d binary
+*.bundle binary
+*.resS binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TtmapgenHarness</RootNamespace>
+    <AssemblyName>ttmapgen-harness</AssemblyName>
+  </PropertyGroup>
+
+  <!--
+    The harness is the C# oracle/generator bridge (plan §11, §4.4/4.5). It references
+    AssetsTools.NET + MonoCecil/Cpp2IL generators, built once from the pinned source
+    (gradle.properties: asset4j.assetstools.commit). tools/build_ttmapgen_harness.py
+    fetches that pinned checkout, builds the three projects, and copies the built DLLs
+    into lib/ (gitignored) so the harness references a stable, non-ephemeral location.
+  -->
+  <!-- testdll is a separate fixture project; its obj/** glob (AssemblyInfo.cs) must not
+       leak into this project's compile (duplicate [assembly:] attribute errors). -->
+  <ItemGroup>
+    <Compile Remove="testdll/**/*.cs" />
+    <None Remove="testdll/**/*" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.3" />
+    <PackageReference Include="Samboy063.LibCpp2IL" Version="2022.1.0-pre-release.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AssetsTools.NET">
+      <HintPath>lib/AssetsTools.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="AssetsTools.NET.MonoCecil">
+      <HintPath>lib/AssetsTools.NET.MonoCecil.dll</HintPath>
+    </Reference>
+    <Reference Include="AssetsTools.NET.Cpp2IL">
+      <HintPath>lib/AssetsTools.NET.Cpp2IL.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

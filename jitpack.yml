@@ -1,0 +1,7 @@
+# JitPack build config. JitPack checks out the repo, runs this, and publishes the
+# `maven-publish` artifacts under com.github.jpabscale:asset4j:<version>.
+jdk:
+  - 21
+before_install:
+  - sdk install java 21-tem
+  - sdk use java 21-tem

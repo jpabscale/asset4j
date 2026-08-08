@@ -1,0 +1,77 @@
+{
+  "_comment": "Approved parity divergences. ONLY the user may instruct additions/modifications/revocations. Agents must never edit this file (see AGENTS.md). Tools bucket matching entries as EXC (visible, never silent) and flag entries whose markers are unbalanced, nested, duplicated, or reference an id not present here.",
+  "exceptions": [
+    {
+      "id": "EXC-001",
+      "tool": "both",
+      "scope": {
+        "kind": "behavior",
+        "target": "AssetsFileExternal.Read: out-of-range AssetsFileExternalType enum value"
+      },
+      "approved_by": "jpabscale",
+      "approved_on": "2026-08-07",
+      "reason": "C# casts the read int32 to the enum, yielding an undefined enum value on out-of-range input. Kotlin uses `entries[readInt32()]`, which throws instead — fail loudly rather than carry an undefined value. Unreachable for valid files.",
+      "status": "active"
+    },
+    {
+      "id": "EXC-002",
+      "tool": "both",
+      "scope": {
+        "kind": "behavior",
+        "target": "TypeTreeNode.ReadStringTableString: string-table string with no NUL terminator"
+      },
+      "approved_by": "jpabscale",
+      "approved_on": "2026-08-07",
+      "reason": "C# resolves the string via Array.IndexOf(..., 0) and throws IndexOutOfRangeException when no terminator exists. Kotlin uses a bounded while-loop and decodes to the end of the table. Equivalent when a terminator exists; Kotlin is tolerant where C# would throw.",
+      "status": "active"
+    },
+    {
+      "id": "EXC-003",
+      "tool": "both",
+      "scope": {
+        "kind": "behavior",
+        "target": "AssetsFileWriter.WriteCountString/WriteCountStringInt16/WriteCountStringInt32: UTF-8 byte count exceeds the length field"
+      },
+      "approved_by": "jpabscale",
+      "approved_on": "2026-08-07",
+      "reason": "C# constructs the exception object without throwing, silently producing corrupt output. Kotlin throws IllegalArgumentException to surface the bug. Also documented in docs/mapping.md §WriteCountString.",
+      "status": "active"
+    },
+    {
+      "id": "EXC-004",
+      "tool": "both",
+      "scope": {
+        "kind": "code",
+        "target": "AssetBundleBlockAndDirInfo.Write: blank-hash branch condition"
+      },
+      "approved_by": "jpabscale",
+      "approved_on": "2026-08-07",
+      "reason": "C# tests `Hash.data == null`; Kotlin's Hash128.data is a non-null ByteArray, so the faithful translation is `hash.data.isEmpty()`. A 0-length non-null array writes 16 zero bytes where C# writes 0 bytes, but `newBlankHash()` (16 zeros) and the read path converge on the same output.",
+      "status": "active"
+    },
+    {
+      "id": "EXC-005",
+      "tool": "both",
+      "scope": {
+        "kind": "code",
+        "target": "AssetBundleFile: Read/Write/pack structural divergences"
+      },
+      "approved_by": "jpabscale",
+      "approved_on": "2026-08-07",
+      "reason": "Three deliberate divergences: (a) C# constructs NotImplementedException/Exception objects without throwing; Kotlin throws them (fail loudly). (b) write/pack append a trailing `writer.position = ...` statement needed for the ByteArray-backed writer, absent in C#'s stream writer. (c) Read -> unpackInfoOnly eagerly decompresses the data region and forces dataIsCompressed=false, where C# keeps LZMA bundles lazy.",
+      "status": "active"
+    },
+    {
+      "id": "EXC-006",
+      "tool": "both",
+      "scope": {
+        "kind": "code",
+        "target": "AssetFileInfo.Read: trailing Replacer = null"
+      },
+      "approved_by": "jpabscale",
+      "approved_on": "2026-08-07",
+      "reason": "C# ends Read with `Replacer = null;`; the Kotlin `replacer` field defaults to null in the non-null model, so the statement is implicit and omitted.",
+      "status": "active"
+    }
+  ]
+}
