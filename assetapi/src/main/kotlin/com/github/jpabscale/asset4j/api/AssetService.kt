@@ -496,7 +496,22 @@ object AssetService {
         className: String,
         externalBase: Path? = null,
     ): Map<Long, com.fasterxml.jackson.databind.node.ObjectNode> {
-        val bytes = Files.readAllBytes(src)
+        return decodeMatchingObjectsByScriptNameBytes(Files.readAllBytes(src), src, ttmapName, className, externalBase)
+    }
+
+    /** Bytes-threading variant of [decodeMatchingObjectsByScriptName]: decodes the given
+     *  [bytes] instead of re-reading [src], so incremental patches can thread the accumulated
+     *  output of earlier patches into the class-scoped decode. [src] is still used for the
+     *  per-class cache key and any path-dependent script resolution. */
+    @JvmStatic
+    @JvmOverloads
+    fun decodeMatchingObjectsByScriptNameBytes(
+        bytes: ByteArray,
+        src: Path,
+        ttmapName: String?,
+        className: String,
+        externalBase: Path? = null,
+    ): Map<Long, com.fasterxml.jackson.databind.node.ObjectNode> {
         val ttmap = loadTtmap(ttmapName)
         val af = AssetsFile()
         af.read(AssetsFileReader(bytes))
@@ -520,9 +535,33 @@ object AssetService {
         edited: Map<Long, com.fasterxml.jackson.databind.node.ObjectNode>,
         externalBase: Path? = null,
     ): ByteArray {
-        return patchObjectsJsonByScriptNameRoundTrip(src, ttmapName, className, externalBase = externalBase, transform = { info, node ->
-            edited[info.pathId] ?: node
-        })
+        return patchObjectsFromDataByScriptNameBytes(Files.readAllBytes(src), src, ttmapName, className, edited, externalBase)
+    }
+
+    /** Bytes-threading variant of [patchObjectsFromDataByScriptName]: re-encodes [edited]
+     *  object Data into the given [bytes] instead of re-reading [src]. Necessary for
+     *  incremental patching — a bundle may receive several patches (class-scoped and raw) in
+     *  sequence, each operating on the previous patch's output. */
+    @JvmStatic
+    @JvmOverloads
+    fun patchObjectsFromDataByScriptNameBytes(
+        bytes: ByteArray,
+        src: Path,
+        ttmapName: String?,
+        className: String,
+        edited: Map<Long, com.fasterxml.jackson.databind.node.ObjectNode>,
+        externalBase: Path? = null,
+    ): ByteArray {
+        val ttmap = loadTtmap(ttmapName)
+        return if (AssetsFile.isAssetsFile(AssetsFileReader(bytes), 0, bytes.size.toLong())) {
+            patchObjectsFileByScriptName(bytes, src, ttmap, className, { info, node ->
+                edited[info.pathId] ?: node
+            }, preserveStructure = false, externalBase = externalBase)
+        } else {
+            patchObjectsBundleByScriptName(bytes, src, ttmap, className, { info, node ->
+                edited[info.pathId] ?: node
+            }, preserveStructure = false, externalBase = externalBase)
+        }
     }
 
     private fun loadClassDecode(
