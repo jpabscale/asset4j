@@ -475,7 +475,7 @@ class AssetBundleFile {
         if (newHeader.version >= 7)
             writer.align16()
 
-        val headerSize = (writer.position - startPos).toInt()
+        val headerSize = writer.position - startPos
 
         var totalCompressedSize = 0L
         val newBlocks = mutableListOf<AssetBundleBlockInfo>()
@@ -541,7 +541,7 @@ class AssetBundleFile {
         val bundleInfoBytes = infoWriter.toByteArray()
         val bundleInfoBytesCom = if (compType == AssetBundleCompressionType.LZ4Fast) UnityCompression.compressLz4Fast(bundleInfoBytes) else UnityCompression.compressLz4(bundleInfoBytes)
 
-        val totalFileSize = (headerSize + bundleInfoBytesCom.size + totalCompressedSize).toLong()
+        val totalFileSize = headerSize + bundleInfoBytesCom.size + totalCompressedSize
         newFsHeader.totalFileSize = totalFileSize
         newFsHeader.decompressedSize = bundleInfoBytes.size.toLong()
         newFsHeader.compressedSize = bundleInfoBytesCom.size.toLong()

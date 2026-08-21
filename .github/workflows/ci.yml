@@ -10,8 +10,18 @@ on:
 
 jobs:
   build-test:
-    name: Build and test
-    runs-on: ubuntu-latest
+    name: Build and test (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest,    name: linux-amd64 }
+          - { os: ubuntu-24.04-arm, name: linux-arm64 }
+          - { os: macos-15,         name: macos-amd64 }
+          - { os: macos-latest,     name: macos-arm64 }
+          - { os: windows-latest,   name: windows-amd64 }
+          - { os: windows-11-arm,   name: windows-arm64 }
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -19,7 +29,7 @@ jobs:
       - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          distribution: temurin
+          distribution: liberica
           java-version: "25"
           cache: gradle
 

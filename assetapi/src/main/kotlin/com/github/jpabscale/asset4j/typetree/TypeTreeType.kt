@@ -133,11 +133,11 @@ class TypeTreeType {
 
                 if (version >= 23) {
                     val curPos = writer.position
-                    val typeTreeDataLen = (writer.position - typeTreeDataStartPos).toInt()
+                    val typeTreeDataLen = writer.position - typeTreeDataStartPos
 
-                    writer.position = (typeTreeDataStartPos - 4).toInt()
+                    writer.position = typeTreeDataStartPos - 4
                     writer.writeInt32(typeTreeDataLen)
-                    writer.position = curPos.toInt()
+                    writer.position = curPos
                 }
             }
 

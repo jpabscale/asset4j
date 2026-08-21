@@ -62,7 +62,7 @@ class SurgicalPatchTest {
             { info -> true }, // apply to every object; transform only touches MonsterData
             { _, vf ->
                 val name = vf["m_Name"]
-                if (name != null && name.asString == "MonsterData") {
+                if (name.asString == "MonsterData") {
                     val mapper = com.fasterxml.jackson.databind.ObjectMapper()
                     val jsonRoot: com.fasterxml.jackson.databind.JsonNode = mapper.readTree(vf["m_Script"].asString)
                     val json = jsonRoot as com.fasterxml.jackson.databind.node.ObjectNode

@@ -90,7 +90,7 @@ class AssetsFile {
 
         val newMetadataStart = writer.position
         newMetadata.write(writer, header.version)
-        val newMetadataSize = (writer.position - newMetadataStart).toInt()
+        val newMetadataSize = writer.position - newMetadataStart
 
         if (writer.position < 0x1000) {
             while (writer.position < 0x1000) {

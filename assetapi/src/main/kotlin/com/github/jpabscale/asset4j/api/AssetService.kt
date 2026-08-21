@@ -432,7 +432,6 @@ object AssetService {
      *  that value — no arithmetic, mirroring UE's value-table model. Uses the targeted
      *  round-trip rebuild and the per-class JSON decode cache. */
     @JvmStatic
-    @JvmOverloads
     fun patchObjectsSetFieldsByScriptName(
         src: Path,
         ttmapName: String?,

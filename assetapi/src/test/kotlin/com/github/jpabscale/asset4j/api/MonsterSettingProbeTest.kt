@@ -50,7 +50,7 @@ class MonsterSettingProbeTest {
                     while (i < arr.size()) {
                         val m = arr.get(i) as com.fasterxml.jackson.databind.node.ObjectNode
                         if (m.get("MonsterHP") != null) {
-                            m.put("MonsterHP", com.fasterxml.jackson.databind.node.DoubleNode.valueOf(m.get("MonsterHP").asDouble() * 0.5))
+                            m.replace("MonsterHP", com.fasterxml.jackson.databind.node.DoubleNode.valueOf(m.get("MonsterHP").asDouble() * 0.5))
                         }
                         i++
                     }

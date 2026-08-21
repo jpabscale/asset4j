@@ -1,0 +1,25 @@
+config:
+  validation: false
+  warningsAsErrors: false
+
+# Parity port: all rule sets disabled — C#/Rust-mirrored naming (PascalCase methods,
+# snake_case locals, long functions) is intentional. Enable rules selectively when
+# chasing real issues.
+naming:
+  active: false
+complexity:
+  active: false
+style:
+  active: false
+comments:
+  active: false
+coroutines:
+  active: false
+empty-blocks:
+  active: false
+exceptions:
+  active: false
+performance:
+  active: false
+potentialBugs:
+  active: false
