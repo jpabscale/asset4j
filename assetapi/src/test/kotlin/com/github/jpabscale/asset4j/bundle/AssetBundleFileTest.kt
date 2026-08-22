@@ -20,28 +20,11 @@ class AssetBundleFileTest {
         }
     }
 
-    private fun sha256(bytes: ByteArray): String {
-        val md = MessageDigest.getInstance("SHA-256")
-        return md.digest(bytes).joinToString("") { "%02x".format(it) }
-    }
 
-    private fun listBundles(): List<Path> {
-        val root = corpusDir()
-        if (!Files.isDirectory(root)) {
-            return emptyList()
-        }
-        return Files.walk(root).use { stream ->
-            stream.filter { p ->
-                val n = p.fileName.toString()
-                n.endsWith(".bundle") || n.endsWith(".unity3d") || n.endsWith(".ab")
-            }.toList()
-        }
-    }
 
-    private fun manifestKey(bundle: Path): String {
-        // Oracle manifest keys are relative to the repo root: assetapi/src/test/resources/testassets/...
-        return "assetapi/src/test/resources/testassets/" + bundle.toString().substringAfter("testassets/")
-    }
+
+
+
 
     @Test
     fun extractDataUnity3dFiles() {

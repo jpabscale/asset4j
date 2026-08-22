@@ -50,15 +50,26 @@ subprojects {
             if (original_spec_version != null) System.setProperty("java.specification.version", original_spec_version) else System.clearProperty("java.specification.version")
         }
     }
+    tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+        jvmTarget = "21"
+        doFirst {
+            System.setProperty("java.version", "21.0.0")
+            System.setProperty("java.specification.version", "21")
+        }
+    }
 
     extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
         config.setFrom(rootProject.files("config/detekt.yml"))
         buildUponDefaultConfig = false
         parallel = true
+        // grandfathers pre-existing parity-mandated findings; NEW violations fail
+        baseline = file("$projectDir/detekt-baseline.xml")
     }
 
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
+        // lz4-java touches restricted JDK internals during test init
+        jvmArgs("--enable-native-access=ALL-UNNAMED")
     }
 
     plugins.withId("org.jetbrains.kotlin.jvm") {

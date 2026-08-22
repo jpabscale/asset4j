@@ -2,9 +2,7 @@
 package com.github.jpabscale.asset4j.value
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.fasterxml.jackson.databind.node.ObjectNode
 
 /**
  * Converts an [AssetTypeValueField] tree to/from Jackson [JsonNode] (plan §2.6 Data shape).

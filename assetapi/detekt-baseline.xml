@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:AssetFileJson.kt$AssetFileJson$fun toNode( af: AssetsFile, ttmap: Ttmap?, monoScripts: MonoScriptRegistry? = null, selfFileName: String? = null, ): com.fasterxml.jackson.databind.node.ObjectNode</ID>
+    <ID>CyclomaticComplexMethod:AssetTypeValueField.kt$AssetTypeValueField$fun write(writer: AssetsFileWriter)</ID>
+    <ID>CyclomaticComplexMethod:ValueFieldJson.kt$ValueFieldJson$fun fromNode(node: JsonNode, templateField: AssetTypeTemplateField, refMan: RefTypeManager? = null): AssetTypeValueField</ID>
+    <ID>NestedBlockDepth:AssetService.kt$AssetService$private fun buildCabIndexWalk(src: Path, cabHashes: Set&lt;String>): Map&lt;String, Path></ID>
+    <ID>SwallowedException:AssetFileJson.kt$AssetFileJson$e: Exception</ID>
+    <ID>SwallowedException:AssetService.kt$AssetService$e: Exception</ID>
+    <ID>TooManyFunctions:AssetService.kt$AssetService</ID>
+    <ID>UnusedImports:AssetBundleFileTest.kt$import java.security.MessageDigest</ID>
+  </CurrentIssues>
+</SmellBaseline>

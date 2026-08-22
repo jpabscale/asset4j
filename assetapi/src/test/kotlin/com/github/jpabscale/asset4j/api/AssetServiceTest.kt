@@ -2,7 +2,6 @@
 package com.github.jpabscale.asset4j.api
 
 import com.github.jpabscale.asset4j.io.AssetsFileReader
-import com.github.jpabscale.asset4j.io.AssetsFileWriter
 import com.github.jpabscale.asset4j.serializedfile.AssetsFile
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
